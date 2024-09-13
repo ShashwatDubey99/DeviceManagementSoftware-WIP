@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+</head>
+<body>
+    <h2>Add Device</h2>
+<form id="add-device-form" onsubmit="addDevice(event)">
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required><br>
+
+    <label for="class_section">Class/Department:</label>
+    <select id="class_section" name="class_section">
+        <option value="IT">IT</option>
+        <option value="Science">Science</option>
+        <option value="Math">Math</option>
+        <option value="History">History</option>
+        <!-- Add more options as needed -->
+    </select><br>
+
+    <label for="make">Make:</label>
+    <input type="text" id="make" name="make" required><br>
+
+    <label for="condition">Condition:</label>
+    <input type="text" id="condition" name="condition" required><br>
+
+    <label for="condition_remark">Condition Remark:</label>
+    <input type="text" id="condition_remark" name="condition_remark"><br>
+
+    <label for="serial_no">Serial Number:</label>
+    <input type="text" id="serial_no" name="serial_no" required><br>
+
+    <label for="school_serial_no">School Serial Number:</label>
+    <input type="text" id="school_serial_no" name="school_serial_no" required><br>
+
+    <button type="submit">Add Device</button>
+</form>
+<script>
+    async function addDevice(event) {
+    event.preventDefault(); // Prevent form from refreshing the page
+
+    const formData = {
+        description: document.getElementById('description').value,
+        class_section: document.getElementById('class_section').value,
+        make: document.getElementById('make').value,
+        condition: document.getElementById('condition').value,
+        condition_remark: document.getElementById('condition_remark').value,
+        serial_no: document.getElementById('serial_no').value,
+        school_serial_no: document.getElementById('school_serial_no').value
+    };
+
+    const response = await fetch('/api/devices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
+        alert("Device added successfully!");
+        document.getElementById('add-device-form').reset();
+        fetchDevices(); // Refresh the device list
+    } else {
+        alert("Error adding device.");
+    }
+}
+
+</script>
+</body>
+</html>

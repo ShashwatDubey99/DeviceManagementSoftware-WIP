@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Management</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <center><h2>Device Management</h2></center>
+<center>
+    <!-- Add this button at the top of your page -->
+<button id="add-device-button" onclick="redirectToAddDevice()">+ Add Device</button>
+
+<select id="filter-by-class" onchange="fetchDevices()">
+    <option value="all">All</option>
+    <option value="IT">IT</option>
+    <option value="Science">Science</option>
+    <option value="Math">Math</option>
+    <option value="History">History</option>
+    <!-- Add more class/department options as needed -->
+</select>
+</center>
+
+
+<table id="device-table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Class & Section</th>
+            <th>Make</th>
+            <th>Condition</th>
+            <th>Condition Remark</th>
+            <th>Serial No</th>
+            <th>School Serial No</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="device-list">
+        <!-- Devices will be dynamically inserted here -->
+    </tbody>
+</table>
+
+
+<script>
+// Fetch and display devices
+function redirectToAddDevice() {
+    window.location.href = '/adddevice';
+}
+
+async function fetchDevices() {
+    const selectedClass = document.getElementById('filter-by-class').value;
+    let url = '/api/devices';
+
+    if (selectedClass !== 'all') {
+        url += `?class_section=${selectedClass}`;
+    }
+
+    const response = await fetch(url);
+    const devices = await response.json();
+
+    const deviceList = document.getElementById('device-list');
+    deviceList.innerHTML = '';
+    
+    devices.forEach(device => {
+        deviceList.innerHTML += `
+            <tr>
+                <td>${device.description}</td>
+                <td>${device.class_section}</td>
+                <td>${device.make}</td>
+                <td>${device.condition}</td>
+                <td>${device.condition_remark}</td>
+                <td>${device.serial_no}</td>
+                <td>${device.school_serial_no}</td>
+                <td>
+                    <button onclick="deleteDevice(${device.id})">Delete</button>
+                    <button onclick="editDevice(${device.id})">Edit</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+let password = "1234";  // Define the password for editing/deleting devices
+
+async function deleteDevice(id) {
+    const userPassword = prompt("Enter password to delete this device:");
+    if (userPassword !== password) {
+        alert("Incorrect password");
+        return;
+    }
+
+    const response = await fetch(`/api/devices/${id}`, { method: 'DELETE' });
+
+    if (response.ok) {
+        fetchDevices();
+    }
+}
+
+async function editDevice(id) {
+    const userPassword = prompt("Enter password to edit this device:");
+    if (userPassword !== password) {
+        alert("Incorrect password");
+        return;
+    }
+
+    // Fetch device details and pre-fill form
+    const response = await fetch(`/api/devices/${id}`);
+    const device = await response.json();
+
+    document.getElementById('description').value = device.description;
+    document.getElementById('class_section').value = device.class_section;
+    document.getElementById('make').value = device.make;
+    document.getElementById('condition').value = device.condition;
+    document.getElementById('condition_remark').value = device.condition_remark;
+    document.getElementById('serial_no').value = device.serial_no;
+    document.getElementById('school_serial_no').value = device.school_serial_no;
+
+    // Set action for form submit
+    document.getElementById('device-form').onsubmit = async function(event) {
+        event.preventDefault();
+
+        const updatedData = {
+            description: document.getElementById('description').value,
+            class_section: document.getElementById('class_section').value,
+            make: document.getElementById('make').value,
+            condition: document.getElementById('condition').value,
+            condition_remark: document.getElementById('condition_remark').value,
+            serial_no: document.getElementById('serial_no').value,
+            school_serial_no: document.getElementById('school_serial_no').value
+        };
+
+        const updateResponse = await fetch(`/api/devices/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (updateResponse.ok) {
+            fetchDevices();
+        }
+    };
+}
+
+// Add new device
+async function addDevice() {
+    const description = document.getElementById('description').value;
+    const class_section = document.getElementById('class_section').value;
+    const make = document.getElementById('make').value;
+    const condition = document.getElementById('condition').value;
+    const condition_remark = document.getElementById('condition_remark').value;
+    const serial_no = document.getElementById('serial_no').value;
+    const school_serial_no = document.getElementById('school_serial_no').value;
+
+    const response = await fetch('/api/devices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            description, class_section, make, condition, condition_remark, serial_no, school_serial_no
+        })
+    });
+
+    if (response.ok) {
+        fetchDevices();
+    }
+}
+
+// Delete device
+async function deleteDevice(id) {
+    const response = await fetch(`/api/devices/${id}`, { method: 'DELETE' });
+
+    if (response.ok) {
+        fetchDevices();
+    }
+}
+
+// Fetch devices on page load
+window.onload = fetchDevices;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+/* Global body styles */
+body {
+    background-color: #000000;
+    color: #f2f2f2;
+    
+
+    margin: 0;
+    padding: 0;
+}
+select {
+    scale: 1.2;
+  }
+  #add-device-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #00aaff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+#add-device-button:hover {
+    background-color: #0077cc;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #242424;
+    margin:2dvi
+}
+thead{
+    background-color: #103429;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Hover effect on table rows */
+tr:hover {
+    background-color: #333;
+}
+
+/* Button styling */
+button {
+    background-color: #00aaff;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005577;
+}
+
+/* Form styling */
+form {
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    margin: 8px 0;
+}
+
+form input, form select {
+    padding: 8px;
+    margin: 4px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Error message for invalid password */
+.error {
+    color: red;
+    font-weight: bold;
+}
