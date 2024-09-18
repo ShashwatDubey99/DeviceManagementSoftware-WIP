@@ -1,0 +1,84 @@
+/* Basic reset and font settings */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+/* Container for centering content */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styling */
+header {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: #00796b;
+}
+
+/* Main content styling */
+main {
+    padding: 20px;
+}
+
+.team, .special-thanks {
+    margin-bottom: 20px;
+}
+
+.team h2, .special-thanks h2 {
+    border-bottom: 2px solid #00796b;
+    padding-bottom: 10px;
+    color: #00796b;
+}
+
+/* Team member list */
+.team ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.team li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.team img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.team p {
+    margin: 0;
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    color: #555;
+}
+
+footer p {
+    margin: 0;
+}

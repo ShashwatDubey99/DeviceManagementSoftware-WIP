@@ -3,69 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-</head>
-<body>
-    <h2>Add Device</h2>
-<form id="add-device-form" onsubmit="addDevice(event)">
-    <label for="description">Description:</label>
-    <input type="text" id="description" name="description" required><br>
+    <title>Add Device</title>
+    <style>
+        /* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/* Button for returning placed in the top-right corner */
+/* Button for returning placed in the top-right corner */
+#add-device-button {
+    position: fixed; /* Fixed to keep it always in view */
+    top: 20px; /* 20px from the top of the page */
+    right: 20px; /* 20px from the right of the page */
+    background-color: #607d8b; /* Background color */
+    color: white; /* Text color */
+    padding: 10px 20px; /* Button padding */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Font size */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+    z-index: 1000; /* Make sure the button is on top of other elements */
+    display: inline-block; /* Prevent the button from stretching */
+}
 
-    <label for="class_section">Class/Department:</label>
-    <select id="class_section" name="class_section">
-        <option value="IT">IT</option>
-        <option value="Science">Science</option>
-        <option value="Math">Math</option>
-        <option value="History">History</option>
-        <!-- Add more options as needed -->
-    </select><br>
+#add-device-button:hover {
+    background-color: #455a64; /* Darker color on hover */
+}
 
-    <label for="make">Make:</label>
-    <input type="text" id="make" name="make" required><br>
 
-    <label for="condition">Condition:</label>
-    <input type="text" id="condition" name="condition" required><br>
 
-    <label for="condition_remark">Condition Remark:</label>
-    <input type="text" id="condition_remark" name="condition_remark"><br>
+h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
 
-    <label for="serial_no">Serial Number:</label>
-    <input type="text" id="serial_no" name="serial_no" required><br>
+/* Center the Add Device Form */
+#add-device-form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
 
-    <label for="school_serial_no">School Serial Number:</label>
-    <input type="text" id="school_serial_no" name="school_serial_no" required><br>
+/* Form Input Fields */
+label {
+    font-size: 0.9rem;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
 
-    <button type="submit">Add Device</button>
-</form>
-<script>
-    async function addDevice(event) {
-    event.preventDefault(); // Prevent form from refreshing the page
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    color: #333;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
 
-    const formData = {
-        description: document.getElementById('description').value,
-        class_section: document.getElementById('class_section').value,
-        make: document.getElementById('make').value,
-        condition: document.getElementById('condition').value,
-        condition_remark: document.getElementById('condition_remark').value,
-        serial_no: document.getElementById('serial_no').value,
-        school_serial_no: document.getElementById('school_serial_no').value
-    };
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    outline: none;
+    border-color: #009688;
+    box-shadow: 0 0 6px rgba(0, 150, 136, 0.3);
+}
 
-    const response = await fetch('/api/devices', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-    });
+/* Submit Button */
+button[type="submit"] {
+    background-color: #009688;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
 
-    if (response.ok) {
-        alert("Device added successfully!");
-        document.getElementById('add-device-form').reset();
-        fetchDevices(); // Refresh the device list
-    } else {
-        alert("Error adding device.");
+button[type="submit"]:hover {
+    background-color: #00796b;
+}
+
+
+/* Form Layout */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Media Queries */
+@media (max-width: 600px) {
+    #add-device-form {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
     }
 }
 
+    </style>
+</head>
+<body>
+   
+    <!-- Add Device Form Container -->
+    <div id="add-device-form">
+        <h2>Add New Device</h2>
+
+        <form id="device-form" onsubmit="submitAddDevice(event)">
+            <label for="description">Description</label>
+            <input type="text" id="description" name="description" required>
+
+            <label for="date">Date of Purchase</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="class_section">Class/Department</label>
+            <select id="class_section" name="class_section">
+                <option value="IT">IT</option>
+                <option value="Science">Science</option>
+                <option value="Math">Math</option>
+                <option value="History">History</option>
+                <!-- Add more options as needed -->
+                <!-- Classes 1 to 12 with sections A and B -->
+                <option value="Class 1A">Class 1A</option>
+                <option value="Class 1B">Class 1B</option>
+                <option value="Class 2A">Class 2A</option>
+                <option value="Class 2B">Class 2B</option>
+                <option value="Class 3A">Class 3A</option>
+                <option value="Class 3B">Class 3B</option>
+                <option value="Class 4A">Class 4A</option>
+                <option value="Class 4B">Class 4B</option>
+                <option value="Class 5A">Class 5A</option>
+                <option value="Class 5B">Class 5B</option>
+                <option value="Class 6A">Class 6A</option>
+                <option value="Class 6B">Class 6B</option>
+                <option value="Class 7A">Class 7A</option>
+                <option value="Class 7B">Class 7B</option>
+                <option value="Class 8A">Class 8A</option>
+                <option value="Class 8B">Class 8B</option>
+                <option value="Class 9A">Class 9A</option>
+                <option value="Class 9B">Class 9B</option>
+                <option value="Class 10A">Class 10A</option>
+                <option value="Class 10B">Class 10B</option>
+                <option value="Class 11A">Class 11A</option>
+                <option value="Class 11B">Class 11B</option>
+                <option value="Class 12A">Class 12A</option>
+                <option value="Class 12B">Class 12B</option>
+                <!-- Junior and Senior Labs -->
+                <option value="Junior Lab">Junior Lab</option>
+                <option value="Senior Lab">Senior Lab</option>
+            </select>
+            
+
+            <label for="make">Make</label>
+            <input type="text" id="make" name="make" required>
+
+            <label for="condition">Condition</label>
+            <input type="text" id="condition" name="condition" required>
+
+            <label for="condition_remark">Condition Remark</label>
+            <input type="text" id="condition_remark" name="condition_remark">
+
+            <label for="serial_no">Serial Number</label>
+            <input type="text" id="serial_no" name="serial_no" required>
+
+            <label for="school_serial_no">School Serial Number</label>
+            <input type="text" id="school_serial_no" name="school_serial_no" required>
+
+            <button type="submit">Add Device</button>
+        </form>
+    </div>
+    <div>
+    <button id="add-device-button" onclick="redirect()">+ Return</button></div>
+<script>
+    function redirect() {
+    window.location.href = '/';
+}
+    // Function to submit the form
+    async function submitAddDevice(event) {
+        event.preventDefault();
+
+        const description = document.getElementById('description').value;
+        const date = document.getElementById('date').value;
+        const class_section = document.getElementById('class_section').value;
+        const make = document.getElementById('make').value;
+        const condition = document.getElementById('condition').value;
+        const condition_remark = document.getElementById('condition_remark').value;
+        const serial_no = document.getElementById('serial_no').value;
+        const school_serial_no = document.getElementById('school_serial_no').value;
+
+        const response = await fetch('/api/devices', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                description, date, class_section, make, condition, condition_remark, serial_no, school_serial_no
+            })
+        });
+
+        if (response.ok) {
+            alert("Device added successfully!");
+            window.location.href = '/';
+        } else {
+            alert("Failed to add device.");
+        }
+    }
 </script>
+
 </body>
 </html>
