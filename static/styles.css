@@ -1,40 +1,91 @@
-/* Global body styles */
-body {
-    background-color: #000000;
-    color: #f2f2f2;
+:root
+{
+    --bg-color: #1e1e2e; /* Dark purple background */
+    --text-color: #ffffff; /* White text */
     
+    /* Primary and Secondary Colors */
+    --primary-color: #4c2b64; /* Purple button and borders */
+    --secondary-color: #2d2c54; /* Soft purple button */
 
+    /* Hover Colors */
+    --hover-color: #6a2c8a; /* Darker purple on hover */
+    
+    /* Footer Colors */
+    --footer-bg: #4c2b64; /* Dark purple footer */
+    --footer-link-color: #ff6b81; /
+}
+/* Dark Theme */
+.dark-theme {
+    --bg-color: #000000;
+    --text-color: #f2f2f2;
+    --primary-color: #00aaff;
+    --secondary-color: #242424;
+    --hover-color: #333;
+    --footer-bg: #607d8b;
+    --footer-link-color: #ffeb3b;
+}
+
+/* Purple Theme */
+.light-theme 
+    {
+        --bg-color: #e0efff;
+        --text-color: hsl(0, 0%, 9%);
+        --primary-color: #39ace7;
+        --secondary-color: #d9f1fa;
+        --hover-color: #cee8ff;
+        --footer-bg: #0784b5;
+        --footer-link-color: #ffeb3b;
+    }
+html{
+    height: 100%;
+}
+/* Applying the theme variables to the elements */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
     margin: 0;
     padding: 0;
 }
 select {
     scale: 1.2;
   }
+  form{
+    select{
+        scale: 1.0;
+
+    }
+  }
   #logo {
-    position: fixed;
+    position:absolute;
     top: 20px;
     left: 20px;
     width: 100px; /* Adjust width as needed */
     height: auto;
     z-index: 1000;
 }
+/* Header logo */
 
-  #add-device-button {
-    position: fixed;
+
+/* Add device button */
+#add-device-button {
+    position: absolute;
     top: 20px;
     right: 20px;
-    background-color: #00aaff;
+    background-color: var(--primary-color);
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    z-index: 1000; /* Ensure it's above other elements */
+    z-index: 1000;
 }
 
 #add-device-button:hover {
-    background-color: #0077cc;
+    background-color: var(--primary-color);
 }
 
 /* Table styling */
@@ -42,11 +93,13 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    background-color: #242424;
+    background-color: var(--secondary-color);
     margin:2dvi
 }
-thead{
-    background-color: #103429;
+
+thead {
+    background-color: var(--primary-color);
+    color: white;
 }
 
 th, td {
@@ -57,12 +110,12 @@ th, td {
 
 /* Hover effect on table rows */
 tr:hover {
-    background-color: #333;
+    background-color: var(--hover-color);
 }
 
 /* Button styling */
 button {
-    background-color: #00aaff;
+    background-color: var(--primary-color);
     color: white;
     padding: 10px;
     border: none;
@@ -70,7 +123,7 @@ button {
 }
 
 button:hover {
-    background-color: #005577;
+    background-color: var(--primary-color);
 }
 
 /* Form styling */
@@ -89,21 +142,19 @@ form input, form select {
     width: 100%;
     box-sizing: border-box;
 }
+
+/* Footer styling */
 #footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #607d8b;
+    margin-top: auto;
+    background-color: var(--footer-bg);
     color: white;
     text-align: center;
     padding: 10px;
     font-size: 0.9rem;
-    z-index: 1000;
 }
 
 #footer a {
-    color: #ffeb3b;
+    color: var(--footer-link-color);
     text-decoration: none;
     margin: 0 10px;
 }
@@ -112,9 +163,82 @@ form input, form select {
     text-decoration: underline;
 }
 
-
 /* Error message for invalid password */
 .error {
     color: red;
     font-weight: bold;
+}
+/* Modal Backdrop */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1001; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: var(--secondary-color);
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border: 1px solid var(--primary-color);
+    width: 50%; /* Could be more or less, depending on screen size */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+/* Close Button */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+}
+/* Add transition to modal content */
+/* Add keyframe animations for modal opening and closing */
+@keyframes modal-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modal-slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+/* Modal Content */
+.modal.show .modal-content {
+    animation: modal-slide-in 0.3s ease forwards;
+}
+
+.modal.hide .modal-content {
+    animation: modal-slide-out 0.3s ease forwards;
 }

@@ -6,24 +6,43 @@
     <title>Add Device</title>
     <style>
         /* Global Styles */
+/* Global Styles */
+:root {
+    --bg-color: #1e1e2e; /* Dark purple background */
+    --text-color: #ffffff; /* White text */
+    
+    /* Primary and Secondary Colors */
+    --primary-color: #4c2b64; /* Purple button and borders */
+    --secondary-color: #2d2c54; /* Soft purple button */
+
+    /* Hover Colors */
+    --hover-color: #6a2c8a; /* Darker purple on hover */
+    
+    /* Footer Colors */
+    --footer-bg: #4c2b64; /* Dark purple footer */
+    --footer-link-color: #ff6b81; /* Footer link color */
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
+    font-family:inherit;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    flex-direction: column; /* Center content vertically */
+    height: 100vh; /* Full height */
 }
-/* Button for returning placed in the top-right corner */
+
 /* Button for returning placed in the top-right corner */
 #add-device-button {
     position: fixed; /* Fixed to keep it always in view */
     top: 20px; /* 20px from the top of the page */
     right: 20px; /* 20px from the right of the page */
-    background-color: #607d8b; /* Background color */
-    color: white; /* Text color */
+    background-color: var(--primary-color); /* Use primary color */
+    color: var(--text-color); /* Text color */
     padding: 10px 20px; /* Button padding */
     border: none; /* No border */
     border-radius: 5px; /* Rounded corners */
@@ -31,24 +50,21 @@ body {
     cursor: pointer; /* Pointer on hover */
     transition: background-color 0.3s ease; /* Smooth hover effect */
     z-index: 1000; /* Make sure the button is on top of other elements */
-    display: inline-block; /* Prevent the button from stretching */
 }
 
 #add-device-button:hover {
-    background-color: #455a64; /* Darker color on hover */
+    background-color: var(--hover-color); /* Darker color on hover */
 }
 
-
-
 h2 {
-    color: #333;
+    color: var(--text-color); /* Text color */
     font-size: 2rem;
     margin-bottom: 20px;
 }
 
 /* Center the Add Device Form */
 #add-device-form {
-    background-color: #ffffff;
+    background-color: var(--secondary-color); /* Use secondary color */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -59,7 +75,7 @@ h2 {
 /* Form Input Fields */
 label {
     font-size: 0.9rem;
-    color: #555;
+    color: var(--text-color);
     display: block;
     margin-bottom: 5px;
 }
@@ -74,8 +90,8 @@ select {
     border-radius: 5px;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
     font-size: 1rem;
-    color: #333;
-    background-color: #fafafa;
+    color: #333; /* Keep input text dark for readability */
+    background-color: #fafafa; /* Lighter background for input fields */
     transition: all 0.3s ease;
 }
 
@@ -83,14 +99,14 @@ input[type="text"]:focus,
 input[type="date"]:focus,
 select:focus {
     outline: none;
-    border-color: #009688;
-    box-shadow: 0 0 6px rgba(0, 150, 136, 0.3);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 6px rgba(76, 43, 100, 0.3); /* Use primary color for focus */
 }
 
 /* Submit Button */
 button[type="submit"] {
-    background-color: #009688;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--text-color);
     padding: 12px 20px;
     border: none;
     border-radius: 5px;
@@ -101,13 +117,13 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #00796b;
+    background-color: var(--hover-color); /* Darker color on hover */
 }
-
 
 /* Form Layout */
 form {
-    display: flex;
+    display: flow-root; /* Ensure proper layout */
+    justify-content: center;
     flex-direction: column;
 }
 
@@ -122,12 +138,139 @@ form {
     }
 }
 
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: var(--secondary-color); /* Use secondary color */
+}
+
+thead {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Hover effect on table rows */
+tr:hover {
+    background-color: var(--hover-color);
+}
+
+/* Footer styling */
+#footer {
+    margin-top: auto;
+    background-color: var(--footer-bg);
+    color: var(--text-color);
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+#footer a {
+    color: var(--footer-link-color);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
+
+/* Error message for invalid input */
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+/* Modal Backdrop */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1001; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: var(--secondary-color);
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border: 1px solid var(--primary-color);
+    width: 50%; /* Could be more or less, depending on screen size */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+/* Close Button */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+/* Add transition to modal content */
+@keyframes modal-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modal-slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+/* Modal Content Animation */
+.modal.show .modal-content {
+    animation: modal-slide-in 0.3s ease forwards;
+}
+
+.modal.hide .modal-content {
+    animation: modal-slide-out 0.3s ease forwards;
+}
+
+
     </style>
 </head>
 <body>
-   
+   <br>
     <!-- Add Device Form Container -->
     <div id="add-device-form">
+        <br><br><br><br><br>
         <h2>Add New Device</h2>
 
         <form id="device-form" onsubmit="submitAddDevice(event)">
@@ -139,39 +282,7 @@ form {
 
             <label for="class_section">Class/Department</label>
             <select id="class_section" name="class_section">
-                <option value="IT">IT</option>
-                <option value="Science">Science</option>
-                <option value="Math">Math</option>
-                <option value="History">History</option>
-                <!-- Add more options as needed -->
-                <!-- Classes 1 to 12 with sections A and B -->
-                <option value="Class 1A">Class 1A</option>
-                <option value="Class 1B">Class 1B</option>
-                <option value="Class 2A">Class 2A</option>
-                <option value="Class 2B">Class 2B</option>
-                <option value="Class 3A">Class 3A</option>
-                <option value="Class 3B">Class 3B</option>
-                <option value="Class 4A">Class 4A</option>
-                <option value="Class 4B">Class 4B</option>
-                <option value="Class 5A">Class 5A</option>
-                <option value="Class 5B">Class 5B</option>
-                <option value="Class 6A">Class 6A</option>
-                <option value="Class 6B">Class 6B</option>
-                <option value="Class 7A">Class 7A</option>
-                <option value="Class 7B">Class 7B</option>
-                <option value="Class 8A">Class 8A</option>
-                <option value="Class 8B">Class 8B</option>
-                <option value="Class 9A">Class 9A</option>
-                <option value="Class 9B">Class 9B</option>
-                <option value="Class 10A">Class 10A</option>
-                <option value="Class 10B">Class 10B</option>
-                <option value="Class 11A">Class 11A</option>
-                <option value="Class 11B">Class 11B</option>
-                <option value="Class 12A">Class 12A</option>
-                <option value="Class 12B">Class 12B</option>
-                <!-- Junior and Senior Labs -->
-                <option value="Junior Lab">Junior Lab</option>
-                <option value="Senior Lab">Senior Lab</option>
+                
             </select>
             
 
@@ -196,6 +307,39 @@ form {
     <div>
     <button id="add-device-button" onclick="redirect()">+ Return</button></div>
 <script>
+    async function fetchClassOptions() {
+    try {
+        const response = await fetch('/api/classes'); // Update with your actual API endpoint
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // Assuming the API returns an array of class names
+        populateClassSelect(data);
+    } catch (error) {
+        console.error('Failed to fetch class options:', error);
+    }
+}
+
+// Function to populate the select element with class options
+function populateClassSelect(classes) {
+    const selectElement = document.getElementById('class_section');
+
+    // Clear existing options (except the first one)
+    
+
+    // Create option elements from the classes array
+    classes.forEach(cls => {
+        const option = document.createElement('option');
+        option.value = cls; // Set the option value
+        option.textContent = cls; // Set the display text
+        selectElement.appendChild(option); // Add the option to the select element
+    });
+}
+
+// Call the function to fetch and populate class options when the page loads
+document.addEventListener('DOMContentLoaded', fetchClassOptions);
+
+
     function redirect() {
     window.location.href = '/';
 }

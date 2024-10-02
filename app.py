@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request , render_template , redirect
 from flask_sqlalchemy import SQLAlchemy
-
+import json
 app = Flask(__name__,static_folder="static")
 
 # Configure the SQLite database
@@ -126,7 +126,11 @@ def edit_device(id):
     
     db.session.commit()
     return jsonify({'message': 'Device updated successfully!'})
-
+@app.route('/api/classes')
+def clasin():
+    with open ("static/classes.json","r") as file:
+        classes=json.load(file)
+    return jsonify(classes)
 # Delete a device
 @app.route('/api/devices/<int:id>', methods=['DELETE'])
 def delete_device(id):

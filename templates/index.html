@@ -9,207 +9,307 @@
 <body>
 
     <center><h2>Device Management</h2></center>
-<center>
-    <!-- Button to add a new device -->
-    <button id="add-device-button" onclick="redirectToAddDevice()">+ Add Device</button>
-    <img id="logo" src="/static/logo.png" alt="Logo">
-    <!-- Filter by Class/Department dropdown -->
-    <select id="filter-by-class" onchange="fetchDevices()">
-        <option value="all">All</option>
-        <option value="IT">IT</option>
-        <option value="Science">Science</option>
-        <option value="Math">Math</option>
-        <option value="History">History</option>
-        <option value="Class 1A">Class 1A</option>
-                <option value="Class 1B">Class 1B</option>
-                <option value="Class 2A">Class 2A</option>
-                <option value="Class 2B">Class 2B</option>
-                <option value="Class 3A">Class 3A</option>
-                <option value="Class 3B">Class 3B</option>
-                <option value="Class 4A">Class 4A</option>
-                <option value="Class 4B">Class 4B</option>
-                <option value="Class 5A">Class 5A</option>
-                <option value="Class 5B">Class 5B</option>
-                <option value="Class 6A">Class 6A</option>
-                <option value="Class 6B">Class 6B</option>
-                <option value="Class 7A">Class 7A</option>
-                <option value="Class 7B">Class 7B</option>
-                <option value="Class 8A">Class 8A</option>
-                <option value="Class 8B">Class 8B</option>
-                <option value="Class 9A">Class 9A</option>
-                <option value="Class 9B">Class 9B</option>
-                <option value="Class 10A">Class 10A</option>
-                <option value="Class 10B">Class 10B</option>
-                <option value="Class 11A">Class 11A</option>
-                <option value="Class 11B">Class 11B</option>
-                <option value="Class 12A">Class 12A</option>
-                <option value="Class 12B">Class 12B</option>
-        <!-- Add more class/department options as needed -->
-    </select>
-</center>
+    <center>
+        <header>
+            <div id="losgo">
+                <img id="logo" src="/static/logo.png" alt="" srcset="">
+            </div>
+            <button onclick="redirectToAddDevice()" id="add-device-button">Add Device</button>
+            <!-- Theme Selection Dropdown -->
+            <div style="position: absolute; top: 26px; right: 170px;">
+                <label for="theme-select">Select Theme: </label>
+                <select id="theme-select">
+                    <option value="">Purple</option>
+                    <option value="dark-theme">Dark</option>
+                    <option value="light-theme">Light</option>
+                </select>
+            </div>
+        </header>
+        <!-- Filter by Class/Department dropdown -->
+        <select id="filter-by-class" onchange="fetchDevices()">
+         
+        </select>
+    </center>
 
-<!-- Device list table -->
-<table id="device-table">
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Date Of Purchase</th>
-            <th>Class & Section</th>
-            <th>Make</th>
-            <th>Condition</th>
-            <th>Condition Remark</th>
-            <th>Serial No</th>
-            <th>School Serial No</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody id="device-list">
-        <!-- Devices will be dynamically inserted here -->
-    </tbody>
-</table>
+    <!-- Device list table -->
+    <table id="device-table">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Date Of Purchase</th>
+                <th>Class & Section</th>
+                <th>Make</th>
+                <th>Condition</th>
+                <th>Condition Remark</th>
+                <th>Serial No</th>
+                <th>School Serial No</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="device-list">
+            <!-- Devices will be dynamically inserted here -->
+        </tbody>
+    </table>
 
-<!-- Hidden Edit Device Form -->
-<div id="edit-device-form" style="display:none;">
-    <h3>Edit Device</h3>
-    <form id="device-form" onsubmit="submitEditDevice(event)">
-        <label for="edit-description">Description:</label>
-        <input type="text" id="edit-description" name="description" required><br>
+    <!-- Hidden Edit Device Modal -->
+    <div id="edit-device-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditDeviceForm()">&times;</span>
+            <h3>Edit Device</h3>
+            
+                <form id="edit-device-form" onsubmit="submitEditDevice(event)">
+                    <input id="edit-description" type="text" name="description" />
+                    <input id="edit-date" type="date" name="date" />
+                    
+                    <select id="edit-class_section" name="edit-class_section">
+                        
+                    </select>
+                    
+                    <input id="edit-make" type="text" name="make" />
+                    <input id="edit-condition" type="text" name="condition" />
+                    <input id="edit-condition_remark" type="text" name="condition_remark" />
+                    <input id="edit-serial_no" type="text" name="serial_no" />
+                    <input id="edit-school_serial_no" type="text" name="school_serial_no" />
+                    <button type="submit">Save Changes</button>
+                </form>
+                
+           
+        </div>
+    </div>
+
+    <footer id="footer">
+        <p>Made By Shashwat Dubey with help hundreds of google searches and stackoverflow - <a href="https://github.com/ShashwatDubey99/DeviceManagementSoftware-WIP">GitHub</a> | <a href="/credits">Credits</a></p>
+    </footer>
+
+    <script>
+         
+    // Password protection
+    const password = "1234";  // Define the password for deleting and editing devices
+    
+    // Redirect to add device page
+    function redirectToAddDevice() {
+        window.location.href = '/adddevice';
+    }
+    
+    document.getElementById("theme-select").addEventListener("change", function () {
+        var selectedTheme = this.value;
         
-        <label for="edit-date">Date of Purchase:</label>
-        <input type="date" id="edit-date" name="date" required><br>
+        // Remove all previously applied themes
+        document.body.classList.remove("dark-theme", "light-theme");
+        
+        // Apply the selected theme
+        if (selectedTheme) {
+            document.body.classList.add(selectedTheme);
+        }
+    });
 
-        <label for="edit-class_section">Class/Department:</label>
-        <select id="edit-class_section" name="class_section">
-            <option value="IT">IT</option>
-            <option value="Science">Science</option>
-            <option value="Math">Math</option>
-            <option value="History">History</option>
-            <!-- Add more options as needed -->
-        </select><br>
-
-        <label for="edit-make">Make:</label>
-        <input type="text" id="edit-make" name="make" required><br>
-
-        <label for="edit-condition">Condition:</label>
-        <input type="text" id="edit-condition" name="condition" required><br>
-
-        <label for="edit-condition_remark">Condition Remark:</label>
-        <input type="text" id="edit-condition_remark" name="condition_remark"><br>
-
-        <label for="edit-serial_no">Serial Number:</label>
-        <input type="text" id="edit-serial_no" name="serial_no" required><br>
-
-        <label for="edit-school_serial_no">School Serial Number:</label>
-        <input type="text" id="edit-school_serial_no" name="school_serial_no" required><br>
-
-        <button type="submit">Save Changes</button>
-    </form>
-</div>
-<footer id="footer">
-    <p>Made By Shashwat Dubey with help hundreds of google searches and stackoverflow - <a href="https://github.com/ShashwatDubey99/DeviceManagementSoftware-WIP">GitHub</a> | <a href="/credits">Credits</a></p>
-</footer>
-<script>
-// Password protection
-const password = "1234";  // Define the password for deleting and editing devices
-
-// Redirect to add device page
-function redirectToAddDevice() {
-    window.location.href = '/adddevice';
+    // Fetch and display devices
+    async function fetchDevices() {
+        const selectedClass = document.getElementById('filter-by-class').value;
+        let url = '/api/devices';
+    
+        if (selectedClass !== 'all') {
+            url += `?class_section=${selectedClass}`;
+        }
+    
+        const response = await fetch(url);
+        if (!response.ok) {
+            alert("Failed to fetch devices.");
+            return;
+        }
+        const devices = await response.json();
+    
+        const deviceList = document.getElementById('device-list');
+        deviceList.innerHTML = '';
+    
+        devices.forEach(device => {
+            deviceList.innerHTML += `
+                <tr>
+                    <td>${device.description}</td>
+                    <td>${device.date}</td>
+                    <td>${device.class_section}</td>
+                    <td>${device.make}</td>
+                    <td>${device.condition}</td>
+                    <td>${device.condition_remark}</td>
+                    <td>${device.serial_no}</td>
+                    <td>${device.school_serial_no}</td>
+                    <td>
+                        <button onclick="deleteDevice(${device.id})">Delete</button>
+                        <button onclick="showEditDeviceForm(${device.id})">Edit</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+    
+    // Delete device with password confirmation
+    async function deleteDevice(id) {
+        const userPassword = prompt("Enter password to delete this device:");
+        if (userPassword !== password) {
+            alert("Incorrect password");
+            return;
+        }
+    
+        const response = await fetch(`/api/devices/${id}`, { method: 'DELETE' });
+    
+        if (response.ok) {
+            fetchDevices();
+        } else {
+            alert("Failed to delete device.");
+        }
+    }
+    
+    // Function to open the Edit Device Modal (Updated)
+    async function showEditDeviceForm(id) {
+        const userPassword = prompt("Enter password to edit this device:");
+        if (userPassword !== password) {
+            alert("Incorrect password");
+            return;
+        }
+    
+        const response = await fetch(`/api/devices/${id}`, { method: 'GET' });
+        if (!response.ok) {
+            alert("Failed to fetch device details.");
+            return;
+        }
+        const device = await response.json();
+    
+        document.getElementById('edit-description').value = device.description;
+        document.getElementById('edit-date').value = device.date;
+        document.getElementById('edit-class_section').value = device.class_section;
+        document.getElementById('edit-make').value = device.make;
+        document.getElementById('edit-condition').value = device.condition;
+        document.getElementById('edit-condition_remark').value = device.condition_remark;
+        document.getElementById('edit-serial_no').value = device.serial_no;
+        document.getElementById('edit-school_serial_no').value = device.school_serial_no;
+    
+        // Show the modal
+        const modal = document.getElementById('edit-device-modal');
+        modal.style.display = 'block';
+    
+        // Set the form submission for editing
+        document.getElementById('edit-device-form').onsubmit = function(event) {
+            submitEditDevice(event, id);
+        };
+    }
+    
+    // Function to close the Edit Device Modal
+    function closeEditDeviceForm() {
+        const modal = document.getElementById('edit-device-modal');
+        modal.style.display = 'none';
+    }
+    
+    // Close the modal when clicking outside the modal content
+    window.onclick = function(event) {
+        const modal = document.getElementById('edit-device-modal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+    // Function to fetch class/department options from the API
+async function fetchClassOptionsForIndex() {
+    try {
+        const response = await fetch('/api/classes'); // Update with your actual API endpoint
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // Assuming the API returns an array of class names
+        populateClassSelect(data);
+    } catch (error) {
+        console.error('Failed to fetch class options:', error);
+    }
 }
 
-// Fetch and display devices
-async function fetchDevices() {
-    const selectedClass = document.getElementById('filter-by-class').value;
-    let url = '/api/devices';
+// Function to populate the select element with class options
+function populateClassSelect(classes) {
+    const selectElement = document.getElementById('filter-by-class');
 
-    if (selectedClass !== 'all') {
-        url += `?class_section=${selectedClass}`;
-    }
+    // Clear existing options (except the first one)
+    selectElement.innerHTML = '<option value="all">All</option>';
 
-    const response = await fetch(url);
-    const devices = await response.json();
-
-    const deviceList = document.getElementById('device-list');
-    deviceList.innerHTML = '';
-
-    devices.forEach(device => {
-        deviceList.innerHTML += `
-            <tr>
-                <td>${device.description}</td>
-                <td>${device.date}</td>
-                <td>${device.class_section}</td>
-                <td>${device.make}</td>
-                <td>${device.condition}</td>
-                <td>${device.condition_remark}</td>
-                <td>${device.serial_no}</td>
-                <td>${device.school_serial_no}</td>
-                <td>
-                    <button onclick="deleteDevice(${device.id})">Delete</button>
-                    <button onclick="showEditDeviceForm(${device.id})">Edit</button>
-                </td>
-            </tr>
-        `;
+    // Create option elements from the classes array
+    classes.forEach(cls => {
+        const option = document.createElement('option');
+        option.value = cls; // Set the option value
+        option.textContent = cls; // Set the display text
+        selectElement.appendChild(option); // Add the option to the select element
     });
 }
 
-// Delete device with password confirmation
-async function deleteDevice(id) {
-    const userPassword = prompt("Enter password to delete this device:");
-    if (userPassword !== password) {
-        alert("Incorrect password");
-        return;
-    }
+// Call the function to fetch and populate class options when the page loads
+document.addEventListener('DOMContentLoaded', fetchClassOptionsForIndex);
 
-    const response = await fetch(`/api/devices/${id}`, { method: 'DELETE' });
-
-    if (response.ok) {
-        fetchDevices();
-    } else {
-        alert("Failed to delete device.");
+async function fetchClassOptions() {
+    try {
+        const response = await fetch('/api/classes'); // Update with your actual API endpoint
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // Assuming the API returns an array of class names
+        populateClassSelectForEdit(data);
+    } catch (error) {
+        console.error('Failed to fetch class options:', error);
     }
 }
 
-// Show the Edit Device form and pre-fill with existing data
-async function showEditDeviceForm(id) {
-    const userPassword = prompt("Enter password to edit this device:");
-    if (userPassword !== password) {
-        alert("Incorrect password");
-        return;
-    }
+// Function to populate the select element with class options
+function populateClassSelectForEdit(classes) {
+    const selectElement = document.getElementById('edit-class_section');
 
-    const response = await fetch(`/api/devices/${id}`, { method: 'GET' });
-    const device = await response.json();
+    // Clear existing options (except the first one)
 
-    document.getElementById('edit-description').value = device.description;
-    document.getElementById('edit-date').value = device.date;
-    document.getElementById('edit-class_section').value = device.class_section;
-    document.getElementById('edit-make').value = device.make;
-    document.getElementById('edit-condition').value = device.condition;
-    document.getElementById('edit-condition_remark').value = device.condition_remark;
-    document.getElementById('edit-serial_no').value = device.serial_no;
-    document.getElementById('edit-school_serial_no').value = device.school_serial_no;
 
-    document.getElementById('edit-device-form').style.display = 'block';
-
-    // Set the form submission for editing
-    document.getElementById('device-form').onsubmit = function(event) {
-        submitEditDevice(event, id);
-    };
+    // Create option elements from the classes array
+    classes.forEach(cls => {
+        const option = document.createElement('option');
+        option.value = cls; // Set the option value
+        option.textContent = cls; // Set the display text
+        selectElement.appendChild(option); // Add the option to the select element
+    });
 }
 
+// Call the function to fetch and populate class options when the page loads
+document.addEventListener('DOMContentLoaded', fetchClassOptions);
+
+
+    // Close modal on Esc key press
+    document.addEventListener('keydown', function(event) {
+        const modal = document.getElementById('edit-device-modal');
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Submit the edited device data
+    // Submit the edited device data
 // Submit the edited device data
 async function submitEditDevice(event, id) {
     event.preventDefault();
 
+    // Check if elements exist and capture values
+    const description = document.getElementById('edit-description')?.value;
+    const date = document.getElementById('edit-date')?.value;
+    const classSection = document.getElementById('edit-class_section')?.value;
+    const make = document.getElementById('edit-make')?.value;
+    const condition = document.getElementById('edit-condition')?.value;
+    const conditionRemark = document.getElementById('edit-condition_remark')?.value;
+    const serialNo = document.getElementById('edit-serial_no')?.value;
+    const schoolSerialNo = document.getElementById('edit-school_serial_no')?.value;
+
+    if (!description || !date || !classSection || !make || !condition || !serialNo || !schoolSerialNo) {
+        alert("Please fill all the required fields.");
+        return;
+    }
+
     const updatedData = {
-        description: document.getElementById('edit-description').value,
-        date: document.getElementById('edit-date').value,
-        class_section: document.getElementById('edit-class_section').value,
-        make: document.getElementById('edit-make').value,
-        condition: document.getElementById('edit-condition').value,
-        condition_remark: document.getElementById('edit-condition_remark').value,
-        serial_no: document.getElementById('edit-serial_no').value,
-        school_serial_no: document.getElementById('edit-school_serial_no').value
+        description,
+        date,
+        class_section: classSection,
+        make,
+        condition,
+        condition_remark: conditionRemark,
+        serial_no: serialNo,
+        school_serial_no: schoolSerialNo
     };
 
     const response = await fetch(`/api/devices/${id}`, {
@@ -220,15 +320,19 @@ async function submitEditDevice(event, id) {
 
     if (response.ok) {
         document.getElementById('edit-device-form').style.display = 'none';
-        fetchDevices();
+        location.reload();  // Reload the page to reflect changes
     } else {
         alert("Failed to update device.");
     }
 }
 
-// Fetch devices on page load
-window.onload = fetchDevices;
-</script>
+    // Fetch devices on page load
+    window.onload = function() {
+        fetchDevices();
+        // Reset the theme dropdown on load
+        document.getElementById("theme-select").selectedIndex = 0;
+    };
+    </script>
 
 </body>
 </html>
